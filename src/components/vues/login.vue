@@ -74,7 +74,13 @@
 
           <input type="email" placeholder="이메일" /><br />
           <input type="tel" placeholder="휴대폰번호" /> <br />
-          <button type="button" class="button1">회원가입하기</button>
+          <button
+            type="button"
+            class="button1"
+            onclick="location.href='/login'"
+          >
+            회원가입하기
+          </button>
         </form>
       </div>
       <div class="form-container1 sign-in-container1">
@@ -87,7 +93,12 @@
           <a href="#">아이디 혹은 비밀번호를 잊어버리셨나요?</a>
 
           <div class="login">
-            <button type="button" class="button1" style="margin-bottom: 10px">
+            <button
+              type="button"
+              class="button1"
+              style="margin-bottom: 10px"
+              onclick="location.href='/main2'"
+            >
               로그인
             </button>
 

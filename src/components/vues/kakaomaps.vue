@@ -8,9 +8,8 @@
         data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasScrolling"
         aria-controls="offcanvasScrolling"
-        style="position: absolute; z-index: 2;"
       >
-        카테고리
+        카테고리s
       </button>
 
       <div
@@ -23,18 +22,21 @@
         aria-labelledby="offcanvasScrollingLabel"
       >
         <div class="offcanvas-header" display="flex" text-align="center">
-          <a href="/" title="Home" style="font-size: 32px;">홈</a>
+          <h4 class="offcanvas-title" id="offcanvasScrollingLabel">
+            아래에 해당하는 카테고리를 선택해주세요
+          </h4>
           <button
             type="button"
             class="btn-close"
             data-bs-dismiss="offcanvas"
             aria-label="Close"
           ></button>
-        </div>
-        <div class="offcanvas-header" display="flex" text-align="center">
-          <h4 class="offcanvas-title" id="offcanvasScrollingLabel">
-            아래에 해당하는 카테고리를 선택해주세요
-          </h4>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
         </div>
         <!-- 1 -->
         <div>
@@ -371,7 +373,7 @@
               >이색적</label
             >
             <br />
-            <a>체크한 이름: {{ checkedemotion }}</a>
+            <span>체크한 이름: {{ checkedemotion }}</span>
           </div>
         </div>
         <div style="margin-top: 50px;">
@@ -389,7 +391,6 @@
         data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasScrolling"
         aria-controls="offcanvasScrolling"
-        style="position: absolute; z-index: 2;"
       >
         추천장소
       </button>
@@ -419,7 +420,11 @@
           <div class="row">
             <div class="col-md-12">
               <div id="accordion" class="checkout">
-                <div class="panel checkout-step">
+                <div
+                  class="panel checkout-step"
+                  style="cursor:move;"
+                  draggable="true"
+                >
                   <div>
                     <span class="checkout-step-number">1</span>
                     <h4 class="checkout-step-title">
@@ -436,7 +441,12 @@
                   <div id="collapseOne" class="collapse in"></div>
                 </div>
                 <div class="panel checkout-step">
-                  <div role="tab" id="headingTwo">
+                  <div
+                    role="tab"
+                    id="headingTwo"
+                    style="cursor:move;"
+                    draggable="true"
+                  >
                     <span class="checkout-step-number">2</span>
                     <h4 class="checkout-step-title">
                       <a
@@ -587,7 +597,12 @@
                   </div>
                 </div>
                 <div class="panel checkout-step">
-                  <div role="tab" id="headingThree">
+                  <div
+                    role="tab"
+                    id="headingThree"
+                    style="cursor:move;"
+                    draggable="true"
+                  >
                     <span class="checkout-step-number">3</span>
                     <h4 class="checkout-step-title">
                       <a
@@ -670,7 +685,12 @@
                   </div>
                 </div>
                 <div class="panel checkout-step">
-                  <div role="tab" id="headingFour">
+                  <div
+                    role="tab"
+                    id="headingFour"
+                    style="cursor:move;"
+                    draggable="true"
+                  >
                     <span class="checkout-step-number">4</span>
                     <h4 class="checkout-step-title">
                       <a
@@ -697,10 +717,12 @@
             </div>
           </div>
         </div>
+        Credit by
         <a href="http://jituchauhan.com/" target="_blank"> jitu chauhan</a>
         <div style="margin-top: 50px;">
-          <button @click="Overlaydata([])">마커 선택</button>
+          <button @click="hideMarkers3()">마커 선택</button>
           <button @click="hideMarkers()">마커 삭제</button>
+          <button @click="hideMarkers2()">마커 삭제2</button>
         </div>
       </div>
     </div>
@@ -729,7 +751,10 @@ export default {
       markers: {},
       onclick: true,
       resetmarker: [],
-      checkedemotion: []
+      checkedemotion: [],
+      markerPosition: [],
+      markeris: [],
+      polyline: []
     };
   },
 
@@ -772,13 +797,15 @@ export default {
         { x: 37.483987091628535, y: 126.7830868366494 },
         { x: 37.46851044224279, y: 126.797275939562 }
       ];
-
+      (vm.datas = []), (vm.markeris = data);
+      console.log(vm.markeris);
       // let imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png', // 마커이미지의 주소입니다
       // let imageSrc ="../design/markerimges/img1.png", // 마커이미지의 주소입니다
       let imageSrc =
-          "https://e1.pngegg.com/pngimages/161/145/png-clipart-nami-render-one-piece-nami-on-multicolored-float.png", // 마커이미지의 주소입니다
+          "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png", // 마커이미지의 주소입니다
         imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
-        imageOption = { offset: new kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+        imageOption = { offset: new kakao.maps.Point(27, 69) };
+      // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
       // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
       let markerImage = new kakao.maps.MarkerImage(
@@ -789,22 +816,24 @@ export default {
 
       let bounds = new kakao.maps.LatLngBounds();
 
-      data.forEach(element => {
-        let markerPosition = new kakao.maps.LatLng(element.x, element.y); // 마커가 표시될 위치입니다
+      vm.markeris.forEach(element => {
+        vm.markerPosition = new kakao.maps.LatLng(element.x, element.y); // 마커가 표시될 위치입니다
+        console.log(vm.markerPosition);
         let iwRemoveable = true;
         // 마커를 생성합니다
-        let marker = new kakao.maps.Marker({
-          position: markerPosition,
+        vm.marker = new kakao.maps.Marker({
+          position: vm.markerPosition,
           image: markerImage, // 마커이미지 설정
-          removable: iwRemoveable
+          removable: iwRemoveable,
+          id: "tests"
         });
 
-        let mapmovedata = bounds.extend(markerPosition);
+        let mapmovedata = bounds.extend(vm.markerPosition);
         // 마커가 지도 위에 표시되도록 설정합니다
         //this.clusteredr.clear(marker);
-        //marker.setMap(null);
+        //marker.setMap(null);image.png
 
-        marker.setMap(vm.map);
+        vm.marker.setMap(vm.map);
         vm.map.setBounds(mapmovedata);
 
         // 커스텀 오버레이에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
@@ -827,23 +856,25 @@ export default {
         });
 
         vm.datas.push(new kakao.maps.LatLng(element.x, element.y));
-
-        var polyline = new kakao.maps.Polyline({
+        // vm.polyline.setMap(null);
+        vm.polyline = new kakao.maps.Polyline({
           path: vm.datas, // 선을 구성하는 좌표배열 입니다
           strokeWeight: 5, // 선의 두께 입니다
           strokeColor: "#FFAE00", // 선의 색깔입니다
           strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
-          strokeStyle: "solid" // 선의 스타일입니다
+          strokeStyle: "solid", // 선의 스타일입니다
+          zIndex: 4
         });
 
         //polyline.setMap(null);
-        polyline.setMap(vm.map);
+        vm.polyline.setMap(vm.map);
       });
       console.log(vm.onclick);
       vm.onclick = false;
       console.log(vm.onclick);
       // this.onclick = !this.onclick;
     },
+
     // click: function () {
     //     let vm = this;
     //     var i
@@ -854,13 +885,58 @@ export default {
     // }
     hideMarkers: function() {
       let vm = this;
-      // vm.map(null)
-      Overlaydata(null);
+      vm.markeris.clear = function() {
+        if (vm.markeris.length > 0) {
+          for (let i = 0; i < vm.markeris.length; i++) {
+            vm.markerPosition[i].setMap(null);
+          }
+        }
+      };
+      vm.markeris.clear = function() {
+        if (vm.markeris) vm.markeris.clear(vm.map);
+
+        console.log(vm.marker.position);
+        console.log(vm.markerPosition);
+        // console.log(vm.markerPosition);
+        // let getmarker;
+        // for(let i=0; i < vm.marker.length; i++){
+        //     getmarker = vm.marker[i],
+        //     getmarker = null
+        //     console.log(getmarker);
+        // }
+
+        // console.log(vm.marker)
+        // vm.marker.setMap(vm.map);
+        // marker.setMap(vm.map);
+      };
+    },
+    hideMarkers2: function() {
+      vm.markeris = document.document.getElementById("gs");
+      console.log($("gs"));
+      let vm = this;
+      $("gs").remove();
+    },
+    hideMarkers3: function() {
+      let vm = this;
+      console.log(vm.onclick);
+
+      $(".customoverlay")
+        .parent()
+        .empty();
+      $(
+        "img[src='https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png']"
+      )
+        .parent()
+        .empty();
+      $("path[id*='daum-maps-shape-']")
+        .parent()
+        .empty();
+
+      vm.onclick = true;
     }
   }
 };
 </script>
-
 <style>
 .customoverlay {
   position: relative;
@@ -957,5 +1033,10 @@ h4 {
 button {
   font-family: "Do Hyeon", sans-serif;
   font-size: 20px;
+}
+
+label,
+span {
+  font-family: "Do Hyeon", sans-serif;
 }
 </style>

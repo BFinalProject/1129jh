@@ -33,7 +33,7 @@
                   </ul>
                 </li>
                 <li class="active">
-                  <a href="/login" title="Blog ">로그인</a>
+                  <a href="/login" title="Blog ">로그아웃</a>
                 </li>
               </ul>
             </div>
@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  name: "NavHeader",
+  name: "NavHeader2",
   setup() {
     return {};
   }
