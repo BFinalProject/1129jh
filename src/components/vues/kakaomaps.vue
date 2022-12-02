@@ -8,8 +8,9 @@
         data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasScrolling"
         aria-controls="offcanvasScrolling"
+        style="position: absolute; z-index: 2;"
       >
-        카테고리s
+        카테고리
       </button>
 
       <div
@@ -22,21 +23,22 @@
         aria-labelledby="offcanvasScrollingLabel"
       >
         <div class="offcanvas-header" display="flex" text-align="center">
-          <h4 class="offcanvas-title" id="offcanvasScrollingLabel">
-            아래에 해당하는 카테고리를 선택해주세요
-          </h4>
+          <button type="button" onclick="location.href='/';">
+            홈
+          </button>
           <button
             type="button"
             class="btn-close"
             data-bs-dismiss="offcanvas"
             aria-label="Close"
           ></button>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="offcanvas"
-            aria-label="Close"
-          ></button>
+        </div>
+        <div class="offcanvas-header" display="flex" text-align="center">
+          <div>
+            <h4 class="offcanvas-title" id="offcanvasScrollingLabel">
+              아래에 해당하는 카테고리를 선택해주세요
+            </h4>
+          </div>
         </div>
         <!-- 1 -->
         <div>
@@ -391,6 +393,7 @@
         data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasScrolling"
         aria-controls="offcanvasScrolling"
+        style="position: absolute; z-index: 2;"
       >
         추천장소
       </button>
